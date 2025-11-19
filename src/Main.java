@@ -2,5 +2,6 @@
 
 
 void main(){
+    int Asadasd = 5;
 
 }
