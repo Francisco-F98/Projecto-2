@@ -3,5 +3,6 @@
 
 void main(){
     int Asadasd = 5;
+    int aha = Asadasd +3;
 
 }
