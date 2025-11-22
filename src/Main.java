@@ -11,7 +11,7 @@ public class User{
     // nome tem de ser unico
     private String name;
     // array dos eventos do user
-    private event[] events;
+    private Event[] events;
     // nr de eventos associados ao user
     private int event_count;
 
@@ -19,7 +19,7 @@ public class User{
     // constructor
     public User(String name){
         this.name = name;
-        this.events = new event[max_events];
+        this.events = new Event[max_events];
         this.event_count = 0;
     }
 
@@ -133,7 +133,93 @@ public class Event{
 
 }
 
+//SystemManager
+public class SystemManager{
 
+    // Users
+    // max users = 100
+    private int max_users = 100;
+    private User[] users = new User[max_users];
+    private int user_count =0;
+
+    // Eventos
+    // nr max de eventos= (12*5)*100 = 6000
+    private int max_event = 6000;
+    private Event[] events = new Event[max_event];
+    private int event_count =0;
+
+    // USERS
+    // existe o user no array?
+    public boolean user_exists(String name){
+        for (int i = 0;i<user_count; i++){
+            if (users[i].get_name().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+    // Dá nos o user através do nome
+    public User get_user(String name){
+        for (int i = 0;i<user_count; i++) {
+            if (users[i].get_name().equals(name)) {
+                return users[i];
+            }
+        }
+        return null;
+    }
+    // create user
+    public void create_user(String name){
+        users[user_count]= new User(name);
+        user_count++;
+    }
+
+
+
+    // EVENTOS
+    // existe o evento no array?
+    public boolean event_exists(String name) {
+        for (int i = 0; i < user_count; i++) {
+            if (events[i].get_name().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Dá nos o evento através do nome
+    public Event get_event(String name){
+        for (int i = 0;i<event_count; i++) {
+            if (events[i].get_name().equals(name)) {
+                return events[i];
+            }
+        }
+        return null;
+    }
+    // create event
+    public Event create_event(String name, int day, int start, int end,User[] parts, int count){
+        Event new_Event = new Event(name, day, start, end, parts, count);
+        events[event_count] = new_Event;
+        event_count++;
+        return new_Event;
+    }
+    // remove evento no SystemManager e substitui pelo ultimo elemento de events.
+        public void del_event(Event eventname){
+        for (int i = 0; i< event_count; i++) {
+            if (events[i].equals(eventname)) {
+                events[i] = events[event_count - 1];
+                event_count--;
+            }
+        }
+    }
+
+    //GETTERs
+    public int get_EventCount(){
+        return event_count;
+    }
+    public Event[] get_Events(){
+        return events;
+    }
+}
 
 
 
@@ -157,7 +243,7 @@ public class Main {
     private static final String EXITED="Application exited.";
 
 
-    // não percebi?? criar um user fora da classe?
+
     private static void createUser(UsersPlatform user,String[] name) {
         String username=name[1];
         if(user.exists(username)){System.out.println(CREATE_ERROR);}
@@ -190,9 +276,42 @@ public class Main {
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        UsersPlatform users=new UsersPlatform();
-        executeCommand(users,sc);
-        sc.close();
+        UsersPlatform users = new UsersPlatform();
+        executeCommand(users, sc);
 
+
+        boolean program_on = true;
+        while (program_on) {
+            String command = sc.next();
+
+            switch (command) {
+                case "create":
+                    //... por implementar
+                    break;
+
+                case "schedule":
+                    //... por implementar
+                    break;
+
+                case "cancel":
+                    //... por implementar
+                    break;
+
+                case "show":
+                    //... por implementar
+                    break;
+
+                case "exit":
+                    System.out.println(EXITED);
+                    return;
+
+                case "top":
+                    //... por implementar
+                    break;
+
+                default:
+                    System.out.println(INVALID);
+            }
+        }
     }
 }
