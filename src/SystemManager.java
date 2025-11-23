@@ -12,7 +12,7 @@ public class SystemManager{
     private int user_count =0;
 
     // Eventos
-    // nr max de eventos= (12*5)*100 = 6000
+    // nr max de eventos= (12*5)*100 = 6000?
     private int max_event = 6000;
     private Event[] events = new Event[max_event];
     private int event_count =0;
@@ -101,7 +101,7 @@ public class SystemManager{
 
             // Percorre os eventos por user
             int numberEvents = sfr.nextInt();
-            for (int n=0;i<numberEvents;n++){
+            for (int n=0;n<numberEvents;n++){
                 String eventName = sfr.next();
                 int eventDay = sfr.nextInt();
                 int eventStart = sfr.nextInt();

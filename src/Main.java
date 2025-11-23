@@ -41,22 +41,27 @@ public class Main {
         }
     }
 
-
+    // cria um user novo
     private static void createUser(String[] st) {}
-        private static void scheduleEvent () {
-        }
-        private static void cancelEvent () {
-        }
-        private static void showEvent () {
-        }
-        private static void topEvents () {
-        }
-        private static void exit () {
-            System.out.println(EXITED);
-        }
-        private static void executeCommand (Scanner sc){
-            String command;
-            do {
+    private static void scheduleEvent () {
+    }
+    // apaga o evento, so o proponente pode fazer
+    private static void cancelEvent () {
+    }
+    // mostra o calendario de um user por ordem cronologica
+    private static void showEvent () {
+    }
+    // Mostra eventos por ordem de adesao
+    private static void topEvents () {
+    }
+
+    private static void exit () {
+        System.out.println(EXITED);
+    }
+    // faze
+    private static void executeCommand (Scanner sc){
+        String command;
+        do {
                 command = sc.nextLine();
                 String[] substrings = command.split("\\s+");
                 switch (substrings[0]) {
@@ -84,8 +89,8 @@ public class Main {
         }
     public static void main (String[]args){
         Scanner sc = new Scanner(System.in);
-        UsersPlatform users = new UsersPlatform();
-        executeCommand(users, sc);
+
+
 
 
         boolean program_on = true;
