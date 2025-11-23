@@ -88,7 +88,7 @@ public class SystemManager{
     public Event[] get_Events(){
         return events;
     }
-    // FALTA IMPLEMENTAR LEITURA DO FICHEIRO
+
     // Carrega user e events a partir do ficheiro
     public void loadFile(String fileName) throws FileNotFoundException {
         FileReader fr = new FileReader(fileName);

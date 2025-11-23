@@ -31,14 +31,18 @@ public class Main {
     String fileName = "FICHEIRO";
     // FALTA DESCOBRIR O NOME DO FICHEIRO
     SystemManager sysM = new SystemManager();
-    try
+
 
     {
-        sysM.loadFile(filename)
+        try {
+            sysM.loadFile(fileName);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
-    private static void createUser(UsersPlatform user, String[] name) {}
+    private static void createUser(String[] st) {}
         private static void scheduleEvent () {
         }
         private static void cancelEvent () {
@@ -50,14 +54,14 @@ public class Main {
         private static void exit () {
             System.out.println(EXITED);
         }
-        private static void executeCommand (UsersPlatform users, Scanner sc){
+        private static void executeCommand (Scanner sc){
             String command;
             do {
                 command = sc.nextLine();
                 String[] substrings = command.split("\\s+");
                 switch (substrings[0]) {
                     case CREATE_CMD -> {
-                        createUser(users, substrings);
+                        createUser( substrings);
                     }
                     case SCHEDULE_CMD -> {
                         scheduleEvent();
