@@ -57,35 +57,34 @@ public class Main {
         String[] parts = new String[partCount];
         for (int i=0;i<partCount;i++) parts[i]= sc.next();
 
-        // 1-Checks if event already exists
-        if (sysM.event_exists(eventName)) System.out.println(SCHEDULE_ERROR_EXIST);
 
-        // 2-Checks if every user is valid
+        // 1-Checks if every user is valid
+        boolean user_check = true;
+        for (int i = 0; i < partCount; i++) {
+            if (!(sysM.user_exists(parts[i]))) user_check = false;
+        }
+        if (!(user_check)) System.out.println(SCHEDULE_ERROR_NOT);
+
+        // 2-Checks if event already exists
+        else if (sysM.event_exists(eventName)) System.out.println(SCHEDULE_ERROR_EXIST);
         else {
-            boolean user_check = true;
-            for (int i = 0; i < partCount; i++) {
-                if (!(sysM.user_exists(parts[i]))) user_check = false;
-            }
-            if (!(user_check)) System.out.println(SCHEDULE_ERROR_NOT);
-            else {
-                //Cria lista de Users
-                User[] eventParts = new User[partCount];
-                for (int n = 0; n < partCount; n++) eventParts[n] = sysM.get_user(parts[n]);
+            //Cria lista de Users
+            User[] eventParts = new User[partCount];
+            for (int n = 0; n < partCount; n++) eventParts[n] = sysM.get_user(parts[n]);
 
-                // 3-Checks if proposer is available
-                if (eventParts[0].conflit(eDay, eStart, eEnd)) System.out.println(SCHEDULE_ERROR_PROPOSER);
-                    // 4-Checks if all users are available
+            // 3-Checks if proposer is available
+            if (eventParts[0].conflit(eDay, eStart, eEnd)) System.out.println(SCHEDULE_ERROR_PROPOSER);
+            // 4-Checks if all users are available
+            else {
+                boolean Avail = true;
+                for (int z = 1; z < partCount; z++) {
+                    if (eventParts[z].conflit(eDay, eStart, eEnd)) Avail = false;
+                }
+                if (!Avail) System.out.println(SCHEDULE_ERROR_USER);
+                //5-Creates event after all checks
                 else {
-                    boolean Avail = true;
-                    for (int z = 1; z < partCount; z++) {
-                        if (eventParts[z].conflit(eDay, eStart, eEnd)) Avail = false;
-                    }
-                    if (!Avail) System.out.println(SCHEDULE_ERROR_USER);
-                        //5-Creates event after all checks
-                    else {
-                        sysM.create_event(eventName, eDay, eStart, eEnd, eventParts, partCount);
-                        System.out.println(SCHEDULE_CREATED);
-                    }
+                    sysM.create_event(eventName, eDay, eStart, eEnd, eventParts, partCount);
+                    System.out.println(SCHEDULE_CREATED);
                 }
             }
         }
