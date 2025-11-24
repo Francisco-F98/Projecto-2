@@ -1,6 +1,5 @@
 // Projecto 2 - Elton Vieira, Francisco Ferreira
 import java.util.Scanner;
-import java.io.FileReader;
 import java.io.FileNotFoundException;
 
 
@@ -24,15 +23,12 @@ public class Main {
     private static final String CANCEL_ERROR = "Event cancelled.";
     private static final String EXITED = "Application exited.";
 
+    // Criação da classe SystemManager  e leitura do Text file.
 
-    // IMPLEMENTAR A LEITURA DO FICHEIRO
-
-    Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
     String fileName = "FICHEIRO";
     // FALTA DESCOBRIR O NOME DO FICHEIRO
-    SystemManager sysM = new SystemManager();
-
-
+    static SystemManager sysM = new SystemManager();
     {
         try {
             sysM.loadFile(fileName);
@@ -41,22 +37,46 @@ public class Main {
         }
     }
 
-    // cria um user novo SE ainda não existe
-    private void createUser(String name) {
+
+    // cria um USER novo SE ainda não existe
+    private static void createUser() {
+        String name = sc.next();
         if (sysM.user_exists(name)) System.out.println(CREATE_ERROR);
         else {
             sysM.create_user(name);
             System.out.println(CREATE_USER);
         }
     }
-    // create event
-    private void scheduleEvent (String evName) {
+
+    // Cria um EVENTO novo SE ainda não existe
+    private static void scheduleEvent() {
         String eventName = sc.next();
         int eventDay = sc.nextInt();
         int eventStart = sc.nextInt();
-        int eventEnd = sfr.nextInt();
-        int partCount = sfr.nextInt();
-        if (sysM.event_exists())
+        int eventEnd = sc.nextInt();
+        int partCount = sc.nextInt();
+        String[] parts = new String[partCount];
+        for (int i=0;i<partCount;i++){
+            parts[i]= sc.next();
+        }
+        if (sysM.event_exists(eventName)) System.out.println(SCHEDULE_ERROR_EXIST);
+        else {
+            boolean user_check = true;
+            for (int i=0;i<partCount;i++){
+                if(!(sysM.user_exists(parts[i]))) user_check=false;
+            }
+            if (!(user_check)) System.out.println(SCHEDULE_ERROR_NOT);
+            else{
+                User[] event_users = new User[partCount];
+                for (int n=0;n<partCount;n++) event_users[n] = sysM.get_user(parts[n]);
+                sysM.create_event(eventName,eventDay,eventStart,eventEnd,event_users,partCount);
+                System.out.println(SCHEDULE_CREATED);
+            }
+
+        }
+
+
+
     }
     // apaga o evento, so o proponente pode fazer
     private static void cancelEvent () {
@@ -74,10 +94,14 @@ public class Main {
     // faze
     private static void executeCommand (Scanner sc){
         String command;
+
         do {
-                command = sc.nextLine();
-                String[] substrings = command.split("\\s+");
-                switch (substrings[0]) {
+                // Não da para fazer assim pq por exemplo no schedule: o input tem comando, nome, int int int
+                // command = sc.nextLine();
+                //String[] substrings = command.split("\\s+");
+                command=sc.next();
+
+                switch (command) {
                     case CREATE_CMD -> {
                         createUser( substrings);
                     }
