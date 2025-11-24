@@ -41,9 +41,22 @@ public class Main {
         }
     }
 
-    // cria um user novo
-    private static void createUser(String[] st) {}
-    private static void scheduleEvent () {
+    // cria um user novo SE ainda não existe
+    private void createUser(String name) {
+        if (sysM.user_exists(name)) System.out.println(CREATE_ERROR);
+        else {
+            sysM.create_user(name);
+            System.out.println(CREATE_USER);
+        }
+    }
+    // create event
+    private void scheduleEvent (String evName) {
+        String eventName = sc.next();
+        int eventDay = sc.nextInt();
+        int eventStart = sc.nextInt();
+        int eventEnd = sfr.nextInt();
+        int partCount = sfr.nextInt();
+        if (sysM.event_exists())
     }
     // apaga o evento, so o proponente pode fazer
     private static void cancelEvent () {
