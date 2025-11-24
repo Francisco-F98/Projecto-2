@@ -50,34 +50,48 @@ public class Main {
 
     // Cria um EVENTO novo SE ainda não existe
     private static void scheduleEvent() {
-        String eventName = sc.next();
-        int eventDay = sc.nextInt();
-        int eventStart = sc.nextInt();
-        int eventEnd = sc.nextInt();
+        // Read / Prepare
+        String eventName = sc.next(); int eDay = sc.nextInt();
+        int eStart = sc.nextInt(); int eEnd = sc.nextInt();
         int partCount = sc.nextInt();
         String[] parts = new String[partCount];
-        for (int i=0;i<partCount;i++){
-            parts[i]= sc.next();
-        }
+        for (int i=0;i<partCount;i++) parts[i]= sc.next();
+
+        // 1-Checks if event already exists
         if (sysM.event_exists(eventName)) System.out.println(SCHEDULE_ERROR_EXIST);
+
+        // 2-Checks if every user is valid
         else {
             boolean user_check = true;
-            for (int i=0;i<partCount;i++){
-                if(!(sysM.user_exists(parts[i]))) user_check=false;
+            for (int i = 0; i < partCount; i++) {
+                if (!(sysM.user_exists(parts[i]))) user_check = false;
             }
             if (!(user_check)) System.out.println(SCHEDULE_ERROR_NOT);
-            else{
-                User[] event_users = new User[partCount];
-                for (int n=0;n<partCount;n++) event_users[n] = sysM.get_user(parts[n]);
-                sysM.create_event(eventName,eventDay,eventStart,eventEnd,event_users,partCount);
-                System.out.println(SCHEDULE_CREATED);
+            else {
+                //Cria lista de Users
+                User[] eventParts = new User[partCount];
+                for (int n = 0; n < partCount; n++) eventParts[n] = sysM.get_user(parts[n]);
+
+                // 3-Checks if proposer is available
+                if (eventParts[0].conflit(eDay, eStart, eEnd)) System.out.println(SCHEDULE_ERROR_PROPOSER);
+                    // 4-Checks if all users are available
+                else {
+                    boolean Avail = true;
+                    for (int z = 1; z < partCount; z++) {
+                        if (eventParts[z].conflit(eDay, eStart, eEnd)) Avail = false;
+                    }
+                    if (!Avail) System.out.println(SCHEDULE_ERROR_USER);
+                        //5-Creates event after all checks
+                    else {
+                        sysM.create_event(eventName, eDay, eStart, eEnd, eventParts, partCount);
+                        System.out.println(SCHEDULE_CREATED);
+                    }
+                }
             }
-
         }
-
-
-
     }
+
+
     // apaga o evento, so o proponente pode fazer
     private static void cancelEvent () {
     }
@@ -103,7 +117,7 @@ public class Main {
 
                 switch (command) {
                     case CREATE_CMD -> {
-                        createUser( substrings);
+                        createUser();
                     }
                     case SCHEDULE_CMD -> {
                         scheduleEvent();

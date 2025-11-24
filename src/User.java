@@ -49,7 +49,7 @@ public class User{
     }
 
 
-    // verificar conflitos de horario   // day: 1-5.
+    // verificar conflitos de horario-True se houver conflito  // day: 1-5.
     public boolean conflit(int day, int inicio, int fim){
         for (int i=0; i< event_count; i++){
             Event eventname = events[i];
