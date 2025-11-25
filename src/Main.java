@@ -77,7 +77,6 @@ public class Main {
         if (!(user_check)) System.out.println(SCHEDULE_ERROR_NOT);
 
         // 2-Checks if event already exists
-
         else if (sysM.event_exists(eventName)) System.out.println(SCHEDULE_ERROR_EXIST);
         else {
             //Cria lista de Users
