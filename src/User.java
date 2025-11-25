@@ -35,6 +35,7 @@ public class User{
     public void add_event(Event eventname){
         events[event_count]= eventname;
         event_count ++;
+        System.out.println("event count: "+event_count );
     }
 
 

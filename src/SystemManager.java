@@ -15,13 +15,13 @@ public class SystemManager{
     // nr max de eventos= (12*5)*100 = 6000?
     private int max_event = 6000;
     private Event[] events = new Event[max_event];
-    private int event_count =0;
+    private int TotalEvCount =0;
 
     // USERS
     // existe o user no array?
     public boolean user_exists(String name){
         for (int i = 0;i<user_count; i++){
-            if (users[i].get_name().equals(name)){
+            if ((users[i].get_name()).equals(name)){
                 return true;
             }
         }
@@ -30,7 +30,7 @@ public class SystemManager{
     // Dá nos o user através do nome
     public User get_user(String name){
         for (int i = 0;i<user_count; i++) {
-            if (users[i].get_name().equals(name)) {
+            if ((users[i].get_name()).equals(name)) {
                 return users[i];
             }
         }
@@ -40,6 +40,7 @@ public class SystemManager{
     public void create_user(String name){
         users[user_count]= new User(name);
         user_count++;
+
     }
 
 
@@ -47,7 +48,7 @@ public class SystemManager{
     // EVENTOS
     // existe o evento no array?
     public boolean event_exists(String name) {
-        for (int i = 0; i < user_count; i++) {
+        for (int i = 0; i < TotalEvCount; i++) {
             if (events[i].get_name().equals(name)) {
                 return true;
             }
@@ -57,7 +58,7 @@ public class SystemManager{
 
     // Dá nos o evento através do nome
     public Event get_event(String name){
-        for (int i = 0;i<event_count; i++) {
+        for (int i = 0; i< TotalEvCount; i++) {
             if (events[i].get_name().equals(name)) {
                 return events[i];
             }
@@ -66,24 +67,32 @@ public class SystemManager{
     }
     // create event
     public Event create_event(String name, int day, int start, int end,User[] parts, int count){
-        Event new_Event = new Event(name, day, start, end, parts, count);
-        events[event_count] = new_Event;
-        event_count++;
-        return new_Event;
+
+        events[TotalEvCount] = new Event(name, day, start, end, parts, count);
+        TotalEvCount++;
+        System.out.println("total ev count: "+TotalEvCount);
+        for (int i = 0;i<count; i++){
+            parts[i].add_event(events[TotalEvCount]);
+        }
+        return events[TotalEvCount];
     }
+
     // remove evento no SystemManager e substitui pelo ultimo elemento de events.
     public void del_event(Event eventname){
-        for (int i = 0; i< event_count; i++) {
+        for (int i = 0; i< TotalEvCount; i++) {
             if (events[i].equals(eventname)) {
-                events[i] = events[event_count - 1];
-                event_count--;
+                events[i] = events[TotalEvCount - 1];
+                TotalEvCount--;
             }
         }
     }
 
     //GETTERs
     public int get_EventCount(){
-        return event_count;
+        return TotalEvCount;
+    }
+    public int get_UserCount(){
+        return user_count;
     }
     public Event[] get_Events(){
         return events;

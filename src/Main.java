@@ -41,22 +41,33 @@ public class Main {
     // cria um USER novo SE ainda não existe
     private static void createUser() {
         String name = sc.next();
+        System.out.println(name);
+
         if (sysM.user_exists(name)) System.out.println(CREATE_ERROR);
         else {
             sysM.create_user(name);
             System.out.println(CREATE_USER);
+            System.out.println(sysM.get_UserCount());
         }
     }
 
     // Cria um EVENTO novo SE ainda não existe
     private static void scheduleEvent() {
         // Read / Prepare
+
         String eventName = sc.next(); int eDay = sc.nextInt();
         int eStart = sc.nextInt(); int eEnd = sc.nextInt();
         int partCount = sc.nextInt();
         String[] parts = new String[partCount];
         for (int i=0;i<partCount;i++) parts[i]= sc.next();
 
+        //teste
+        System.out.println(eventName);
+        System.out.println(eDay);
+        System.out.println(eStart);
+        System.out.println(eEnd);
+        System.out.println(partCount);
+        for (int i=0;i<partCount;i++) System.out.println(parts[i]);
 
         // 1-Checks if every user is valid
         boolean user_check = true;
@@ -66,6 +77,7 @@ public class Main {
         if (!(user_check)) System.out.println(SCHEDULE_ERROR_NOT);
 
         // 2-Checks if event already exists
+
         else if (sysM.event_exists(eventName)) System.out.println(SCHEDULE_ERROR_EXIST);
         else {
             //Cria lista de Users
@@ -96,6 +108,24 @@ public class Main {
     }
     // mostra o calendario de um user por ordem cronologica
     private static void showEvent () {
+        String nome = sc.next();
+        sc.nextLine();
+        System.out.println(!(sysM.user_exists(nome)));
+        if (!(sysM.user_exists(nome))){
+            System.out.println(SCHEDULE_ERROR_NOT);
+        }
+        else {
+            if ((sysM.get_user(nome)).get_eventCount() == 0){
+                System.out.println("User "+nome+" has no events");
+            }
+            else {
+                Event[] e_temp = (sysM.get_user(nome)).get_Events();
+                for(int i=0;i<sysM.get_user(nome).get_eventCount();i++){
+                   System.out.println(e_temp[i].get_name()+e_temp[i].get_day()+e_temp[i].get_start()+
+                           e_temp[i].get_end()+ e_temp[i].get_participantCount());
+                }
+            }
+        }
     }
     // Mostra eventos por ordem de adesao
     private static void topEvents () {
@@ -104,46 +134,40 @@ public class Main {
     private static void exit () {
         System.out.println(EXITED);
     }
-    // faze
-    private static void executeCommand (Scanner sc){
+
+    private static void executeCommand (){
+
         String command;
-
         do {
-                // Não da para fazer assim pq por exemplo no schedule: o input tem comando, nome, int int int
-                // command = sc.nextLine();
-                //String[] substrings = command.split("\\s+");
-                command=sc.next();
 
-                switch (command) {
-                    case CREATE_CMD -> {
-                        createUser();
-                    }
-                    case SCHEDULE_CMD -> {
-                        scheduleEvent();
-                    }
-                    case CANCEL_CMD -> {
-                        cancelEvent();
-                    }
-                    case SHOW_CMD -> {
-                        showEvent();
-                    }
-                    case TOP_CMD -> {
-                        topEvents();
-                    }
-                    case EXIT_CMD -> {
-                        exit();
-                    }
-                    default -> System.out.println(INVALID);
+            command=sc.next();
+            switch (command) {
+                case CREATE_CMD -> {
+                    createUser();
+                    sc.nextLine();
                 }
-            } while (!command.equals(EXIT_CMD));
-        }
+                case SCHEDULE_CMD -> {
+
+                    scheduleEvent();
+                }
+                case CANCEL_CMD -> {
+                    cancelEvent();
+                }
+                case SHOW_CMD -> {
+                    showEvent();
+                }
+                case TOP_CMD -> {
+                    topEvents();
+                }
+                case EXIT_CMD -> {
+                    exit();
+                }
+                default -> System.out.println(INVALID);
+            }
+
+        } while (!command.equals(EXIT_CMD));
+    }
     public static void main (String[]args){
-        Scanner sc = new Scanner(System.in);
-
-
-
-
-        boolean program_on = true;
-        while (program_on) {}
+        executeCommand();
     }
 }
