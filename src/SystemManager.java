@@ -66,15 +66,13 @@ public class SystemManager{
         return null;
     }
     // create event
-    public Event create_event(String name, int day, int start, int end,User[] parts, int count){
-
+    public void create_event(String name, int day, int start, int end,User[] parts, int count){
         total_events[TotalEvCount] = new Event(name, day, start, end, parts, count);
-        TotalEvCount++;
         System.out.println("total ev count: "+TotalEvCount);
         for (int i = 0;i<count; i++){
-            parts[i].add_event(total_events[TotalEvCount-1]);
+            parts[i].add_event(total_events[TotalEvCount]);
         }
-        return total_events[TotalEvCount-1];
+        TotalEvCount++;
     }
 
     // remove evento no SystemManager e substitui pelo ultimo elemento de total_events.
