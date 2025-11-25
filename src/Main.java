@@ -120,9 +120,9 @@ public class Main {
             }
             else {
                 Event[] e_temp = (sysM.get_user(nome)).get_Events();
-                for(int i=0;i<sysM.get_user(nome).get_eventCount();i++){
-                   System.out.println(e_temp[i].get_name()+e_temp[i].get_day()+e_temp[i].get_start()+
-                           e_temp[i].get_end()+ e_temp[i].get_participantCount());
+                for(int i=0;i<(sysM.get_user(nome)).get_eventCount();i++){
+                   System.out.println(e_temp[i].get_name()+" "+e_temp[i].get_day()+" "+e_temp[i].get_start()+" "+
+                           e_temp[i].get_end()+" "+e_temp[i].get_participantCount());
                 }
             }
         }

@@ -14,7 +14,7 @@ public class SystemManager{
     // Eventos
     // nr max de eventos= (12*5)*100 = 6000?
     private int max_event = 6000;
-    private Event[] events = new Event[max_event];
+    private Event[] Total_events = new Event[max_event];
     private int TotalEvCount =0;
 
     // USERS
@@ -49,7 +49,7 @@ public class SystemManager{
     // existe o evento no array?
     public boolean event_exists(String name) {
         for (int i = 0; i < TotalEvCount; i++) {
-            if (events[i].get_name().equals(name)) {
+            if (Total_events[i].get_name().equals(name)) {
                 return true;
             }
         }
@@ -59,8 +59,8 @@ public class SystemManager{
     // Dá nos o evento através do nome
     public Event get_event(String name){
         for (int i = 0; i< TotalEvCount; i++) {
-            if (events[i].get_name().equals(name)) {
-                return events[i];
+            if (Total_events[i].get_name().equals(name)) {
+                return Total_events[i];
             }
         }
         return null;
@@ -68,20 +68,20 @@ public class SystemManager{
     // create event
     public Event create_event(String name, int day, int start, int end,User[] parts, int count){
 
-        events[TotalEvCount] = new Event(name, day, start, end, parts, count);
+        Total_events[TotalEvCount] = new Event(name, day, start, end, parts, count);
         TotalEvCount++;
         System.out.println("total ev count: "+TotalEvCount);
         for (int i = 0;i<count; i++){
-            parts[i].add_event(events[TotalEvCount]);
+            parts[i].add_event(Total_events[TotalEvCount-1]);
         }
-        return events[TotalEvCount];
+        return Total_events[TotalEvCount-1];
     }
 
-    // remove evento no SystemManager e substitui pelo ultimo elemento de events.
+    // remove evento no SystemManager e substitui pelo ultimo elemento de Total_events.
     public void del_event(Event eventname){
         for (int i = 0; i< TotalEvCount; i++) {
-            if (events[i].equals(eventname)) {
-                events[i] = events[TotalEvCount - 1];
+            if (Total_events[i].equals(eventname)) {
+                Total_events[i] = Total_events[TotalEvCount - 1];
                 TotalEvCount--;
             }
         }
@@ -95,10 +95,10 @@ public class SystemManager{
         return user_count;
     }
     public Event[] get_Events(){
-        return events;
+        return Total_events;
     }
 
-    // Carrega user e events a partir do ficheiro
+    // Carrega user e Total_events a partir do ficheiro
     public void loadFile(String fileName) throws FileNotFoundException {
         FileReader fr = new FileReader(fileName);
         Scanner sfr = new Scanner(fr);

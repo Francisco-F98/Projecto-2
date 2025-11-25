@@ -53,11 +53,10 @@ public class User{
     // verificar conflitos de horario-True se houver conflito  // day: 1-5.
     public boolean conflit(int day, int inicio, int fim){
         for (int i=0; i< event_count; i++){
-            Event eventname = events[i];
             // metodos definidos na classe Event
-            if (eventname.get_day() == day){
+            if (events[i].get_day() == day){
                 // existe conflito? ( há sobreposição? )
-                if ( (inicio < eventname.get_end()) && (fim  > eventname.get_start()) ){
+                if ( (inicio < events[i].get_end()) && (fim  > events[i].get_start()) ){
                     return true;
                 }
             }
