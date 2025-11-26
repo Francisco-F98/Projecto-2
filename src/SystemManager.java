@@ -15,6 +15,8 @@ public class SystemManager{
     // nr max de eventos= (12*5)*100 = 6000?
     private int max_event = 6000;
     private Event[] total_events = new Event[max_event];
+    private int countTop;
+    private int topPart = 0;
     private int TotalEvCount =0;
 
     // USERS
@@ -42,8 +44,53 @@ public class SystemManager{
         user_count++;
 
     }
+    public boolean checkProp(String name,String eventName){
+        return get_event(eventName).get_proponente().equals(get_user(name));
+    }
+    //Selection sort
+    private void sortEvents() {
+      if(TotalEvCount>=2){
+        for(int i=0;i<TotalEvCount;i++){
+           int maxIdx = i;
+           for(int j=i+1;j<TotalEvCount;j++){
+               if(sortCriteria(total_events[i],total_events[j])){
+                   maxIdx = j;
+               }
+           }
 
+            Event tmpEventName=total_events[i];
+           total_events[i]=total_events[maxIdx];
+           total_events[maxIdx]=tmpEventName;
+            topPart =total_events[0].get_participantCount();
+        }}else topPart=total_events[0].get_participantCount();
 
+    }//Aqui estão o criterios de ordenação que estão no enunciado
+    private boolean sortCriteria (Event eventI,Event eventJ){
+        if(eventI.get_participantCount()!=eventJ.get_participantCount()){
+            return eventI.get_participantCount()<eventJ.get_participantCount();}
+        if(eventI.get_day()!=eventJ.get_day()){
+            return eventI.get_day()<eventJ.get_day();}
+        if(eventI.get_start()!=eventJ.get_start()){
+            return eventI.get_start()>eventJ.get_start();}
+        if(eventI.get_end()!=eventJ.get_end()){
+            return eventI.get_end()>eventJ.get_end();
+        }
+        else return eventI.get_name().compareTo(eventJ.get_name())>0;
+
+        }
+        public Event []top_events(){
+         countTop=0;
+        for(int i=0;i<TotalEvCount;i++){
+            if(topPart==total_events[i].get_participantCount()){
+                countTop++;
+            }
+        }Event[]tempEventName=new Event[countTop];
+        for(int i=0;i<countTop;i++){
+            tempEventName[i]=total_events[i];
+            }
+
+        return tempEventName;
+        }
 
     // EVENTOS
     // existe o evento no array?
@@ -73,19 +120,30 @@ public class SystemManager{
             parts[i].add_event(total_events[TotalEvCount]);
         }
         TotalEvCount++;
+        sortEvents();
+
     }
 
     // remove evento no SystemManager e substitui pelo ultimo elemento de total_events.
-    public void del_event(Event eventname){
+    public void del_event(String event,String user){
+        User userName =get_user(user);
+        Event eventName =get_event(event);
+        userName.del_event_user(eventName);
         for (int i = 0; i< TotalEvCount; i++) {
-            if (total_events[i].equals(eventname)) {
+            if (total_events[i].equals(eventName)) {
                 total_events[i] = total_events[TotalEvCount - 1];
                 TotalEvCount--;
             }
         }
+
     }
 
     //GETTERs
+
+
+    public int getCountTop(){
+        return countTop;
+    }
     public int get_EventCount(){
         return TotalEvCount;
     }
