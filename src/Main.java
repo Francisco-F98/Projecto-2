@@ -19,8 +19,9 @@ public class Main {
     private static final String SCHEDULE_ERROR_NOT = "Some user not registered.";
     private static final String SCHEDULE_ERROR_USER = "Some user not available.";
     private static final String SCHEDULE_ERROR_PROPOSER = "Proposer not available.";
-    private static final String CANCEL_CREATED = "Event successfully cancelled.";
+    private static final String CANCEL_SUCCESS = "Event successfully cancelled.";
     private static final String CANCEL_ERROR = "Event cancelled.";
+    private static final String SHOW_ERROR = "User not registered.";
     private static final String EXITED = "Application exited.";
 
     // Criação da classe SystemManager  e leitura do Text file.
@@ -55,20 +56,13 @@ public class Main {
     private static void scheduleEvent() {
         // Read / Prepare
 
-        String eventName = sc.next(); int eDay = sc.nextInt();
-        int eStart = sc.nextInt(); int eEnd = sc.nextInt();
+        String eventName = sc.next();
+        int eDay = sc.nextInt();
+        int eStart = sc.nextInt();
+        int eEnd = sc.nextInt();
         int partCount = sc.nextInt();
         String[] parts = new String[partCount];
         for (int i=0;i<partCount;i++) parts[i]= sc.next();
-
-        //teste
-        System.out.println(eventName);
-        System.out.println(eDay);
-        System.out.println(eStart);
-        System.out.println(eEnd);
-        System.out.println(partCount);
-        for (int i=0;i<partCount;i++) System.out.println(parts[i]);
-
         // 1-Checks if every user is valid
         boolean user_check = true;
         for (int i = 0; i < partCount; i++) {
@@ -76,7 +70,8 @@ public class Main {
         }
         if (!(user_check)) System.out.println(SCHEDULE_ERROR_NOT);
 
-        // 2-Checks if event already exists
+            // 2-Checks if event already exists
+
         else if (sysM.event_exists(eventName)) System.out.println(SCHEDULE_ERROR_EXIST);
         else {
             //Cria lista de Users
@@ -85,14 +80,14 @@ public class Main {
 
             // 3-Checks if proposer is available
             if (eventParts[0].conflit(eDay, eStart, eEnd)) System.out.println(SCHEDULE_ERROR_PROPOSER);
-            // 4-Checks if all users are available
+                // 4-Checks if all users are available
             else {
                 boolean Avail = true;
                 for (int z = 1; z < partCount; z++) {
                     if (eventParts[z].conflit(eDay, eStart, eEnd)) Avail = false;
                 }
                 if (!Avail) System.out.println(SCHEDULE_ERROR_USER);
-                //5-Creates event after all checks
+                    //5-Creates event after all checks
                 else {
                     sysM.create_event(eventName, eDay, eStart, eEnd, eventParts, partCount);
                     System.out.println(SCHEDULE_CREATED);
@@ -104,14 +99,22 @@ public class Main {
 
     // apaga o evento, so o proponente pode fazer
     private static void cancelEvent () {
+        String eventName = sc.next();
+        String user = sc.next();
+        if (!(sysM.user_exists(user))) System.out.println("User not registered");
+        else if (!(sysM.event_exists(eventName))) System.out.printf("Event not found in calendar of %s .\n",user);
+        else if(!(sysM.checkProp(user,eventName))){System.out.printf("User %s did not create event %s.\n",user,eventName);}
+        else{sysM.del_event(eventName,user);
+        System.out.println(CANCEL_SUCCESS);
+        }
+
     }
     // mostra o calendario de um user por ordem cronologica
     private static void showEvent () {
         String nome = sc.next();
         sc.nextLine();
-        System.out.println(!(sysM.user_exists(nome)));
         if (!(sysM.user_exists(nome))){
-            System.out.println(SCHEDULE_ERROR_NOT);
+            System.out.println(SHOW_ERROR);
         }
         else {
             if ((sysM.get_user(nome)).get_eventCount() == 0){
@@ -120,14 +123,27 @@ public class Main {
             else {
                 Event[] e_temp = (sysM.get_user(nome)).get_Events();
                 for(int i=0;i<(sysM.get_user(nome)).get_eventCount();i++){
-                   System.out.println(e_temp[i].get_name()+" "+e_temp[i].get_day()+" "+e_temp[i].get_start()+" "+
-                           e_temp[i].get_end()+" "+e_temp[i].get_participantCount());
+                    System.out.println(e_temp[i].get_name()+","+e_temp[i].get_day()+","+e_temp[i].get_start()+"-"+
+                            e_temp[i].get_end()+","+e_temp[i].get_participantCount()+ "participants");
                 }
             }
         }
     }
     // Mostra eventos por ordem de adesao
     private static void topEvents () {
+        if(sysM.get_EventCount()==0){
+            System.out.println("No events found");
+        }
+
+        else{
+            Event [] e_temp=sysM.top_events();
+            for(int i=0;i<(sysM.getCountTop());i++){
+                System.out.println(e_temp[i].get_name()+","+e_temp[i].get_day()+","+e_temp[i].get_start()+"-"+
+                        e_temp[i].get_end()+","+e_temp[i].get_participantCount()+ "participants");
+            }
+
+
+        }
     }
 
     private static void exit () {
