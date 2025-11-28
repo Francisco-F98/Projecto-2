@@ -76,7 +76,7 @@ public class SystemManager{
         }
         else return eventI.get_name().compareTo(eventJ.get_name())>0;
         }
-        public Event []top_events(){
+        public Event[] top_events(){
          countTop=0;
         for(int i=0;i<TotalEvCount;i++){
             if(topPart==total_events[i].get_participantCount()){
@@ -155,33 +155,32 @@ public class SystemManager{
         Scanner sfr = new Scanner(fr);
         int numberUsers = sfr.nextInt();
         // Precorre o ficheiro consoante o nr de Users
-        for (int i=0;i<numberUsers;i++){
+        for (int i=0;i<numberUsers;i++) {
             String user_name = sfr.next();
             if (!(user_exists(user_name))) create_user(user_name);
-
-            // Percorre os eventos por user
-            int numberEvents = sfr.nextInt();
-            for (int n=0;n<numberEvents;n++){
-                String eventName = sfr.next();
-                int eventDay = sfr.nextInt();
-                int eventStart = sfr.nextInt();
-                int eventEnd = sfr.nextInt();
-                int partCount = sfr.nextInt();
-
-                // percorre o nr de participantes por evento e cria users se não existirem.
-                User[] participantUser = new User[partCount];
-                for (int m =0;m<partCount;m++){
-                    String participante = sfr.next();
-                    if (user_exists(participante)) participantUser[m]= get_user(participante);
-                    else{
-                        create_user(participante);
-                        participantUser[m]= get_user(participante);
-                    }
+        }
+        // Percorre os eventos
+        int numberEvents = sfr.nextInt();
+        for (int n=0;n<numberEvents;n++){
+            String eventName = sfr.next();
+            int eventDay = sfr.nextInt();
+            int eventStart = sfr.nextInt();
+            int eventEnd = sfr.nextInt();
+            int partCount = sfr.nextInt();
+            // Percorre o nr de participantes por evento
+            User[] participantUser = new User[partCount];
+            for (int m =0;m<partCount;m++){
+                String participante = sfr.next();
+                if (user_exists(participante)) participantUser[m]= get_user(participante);
+                else{
+                    create_user(participante);
+                    participantUser[m]= get_user(participante);
                 }
-                if (!(event_exists(eventName))) {
-                    create_event(eventName, eventDay, eventStart, eventEnd, participantUser, partCount);
-                }
+            }
+            if (!(event_exists(eventName))) {
+                create_event(eventName, eventDay, eventStart, eventEnd, participantUser, partCount);
             }
         }
     }
 }
+

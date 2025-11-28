@@ -1,0 +1,16 @@
+4
+Francisco
+Elton
+Raul
+Sara
+3
+tênis 1 14 15
+2
+Francisco Sara
+padle 2 17 19
+4
+Sara Raul Elton Francisco
+pedicure 1 8 9
+2
+Sara Raul
+
