@@ -52,9 +52,9 @@ public class Event{
     public User get_proponente(){
         return participants[0];
     }
-    public User[] get_participants(){
-        return participants;
-    }
+    public User get_participants(int idx){
+        return participants[idx];
 
+    }
 
 }
