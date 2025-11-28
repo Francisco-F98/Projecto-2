@@ -26,6 +26,9 @@ public class User{
     public Event[] get_Events() {
         return events;
     }
+    public Event get_Events(int idx) {
+        return events[idx];
+    }
     public int get_eventCount(){
         return event_count;
     }
@@ -35,17 +38,53 @@ public class User{
     public void add_event(Event eventname){
         events[event_count]= eventname;
         event_count ++;
+        sortUserEvents();
+
+    }
+    //Sort by selection order
+    public void sortUserEvents(){
+        if(event_count>=2){
+            for(int i=0;i<event_count;i++){
+                int minIdx = i;
+                for(int j=i+1;j<event_count;j++){
+                    if(sortCriteria(events[minIdx],events[j])){
+                        minIdx = j;
+                    }
+                }
+                Event tmpEventName=events[i];
+                events[i]=events[minIdx];
+                events[minIdx]=tmpEventName;
+            }
+        }
+    }
+
+
+
+
+    public boolean sortCriteria(Event eventI,Event eventJ){
+        if(eventI.get_day()!=eventJ.get_day()){
+            return eventI.get_day()>eventJ.get_day();}
+        if(eventI.get_start()!=eventJ.get_start()){
+            return eventI.get_start()>eventJ.get_start();}
+        if(eventI.get_end()!=eventJ.get_end()){
+            return eventI.get_end()>eventJ.get_end();
+        }
+        else return eventI.get_name().compareTo(eventJ.get_name())>0;
+
     }
 
 
     // remove evento no calendario e substitui pelo ultimo elemento de events.
-    public void del_event(Event eventname){
+    public void del_event_user(Event eventname){
         for (int i = 0; i< event_count; i++) {
-            if (events[i].equals(eventname)) {         // usar .equals??
+            if (events[i].equals(eventname)) {         // usar .equals??//eu não mudei nada aqui
                 events[i] = events[event_count - 1];
                 event_count--;
+
             }
         }
+
+        sortUserEvents();
     }
 
 
@@ -62,4 +101,6 @@ public class User{
         }
         return false;
     }
+
+
 }
