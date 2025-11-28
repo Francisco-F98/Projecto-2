@@ -27,7 +27,7 @@ public class Main {
     // Criação da classe SystemManager  e leitura do Text file.
 
     static Scanner sc = new Scanner(System.in);
-    String fileName = "FICHEIRO";
+    String fileName = "Ficheiro";
     // FALTA DESCOBRIR O NOME DO FICHEIRO
     static SystemManager sysM = new SystemManager();
     {
