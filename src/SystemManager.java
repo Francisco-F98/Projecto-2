@@ -128,7 +128,7 @@ public class SystemManager{
     public void del_event(String event,String user){
         User userName =get_user(user);
         Event eventName =get_event(event);
-        userName.del_event_user(eventName);
+        userName.del_event(eventName);
         for (int i = 0; i< TotalEvCount; i++) {
             if (total_events[i].equals(eventName)) {
                 total_events[i] = total_events[TotalEvCount - 1];
