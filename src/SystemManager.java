@@ -16,7 +16,7 @@ public class SystemManager{
     private int max_event = 6000;
     private Event[] total_events = new Event[max_event];
     private int countTop;
-    private int topPart = 0;
+    private int topPart;
     private int TotalEvCount =0;
 
     // USERS
@@ -42,55 +42,60 @@ public class SystemManager{
     public void create_user(String name){
         users[user_count]= new User(name);
         user_count++;
+
     }
-    public boolean checkProp(String name,String eventName){
+    //Verifica se é o proponente
+    public boolean isProponent(String name, String eventName){
         return get_event(eventName).get_proponente().equals(get_user(name));
     }
     //Selection sort
     private void sortEvents() {
-      if(TotalEvCount>=2){
-        for(int i=0;i<TotalEvCount;i++){
-           int maxIdx = i;
-           for(int j=i+1;j<TotalEvCount;j++){
-               if(sortCriteria(total_events[i],total_events[j])){
-                   maxIdx = j;
-               }
-           }
-
-            Event tmpEventName=total_events[i];
-           total_events[i]=total_events[maxIdx];
-           total_events[maxIdx]=tmpEventName;
-            topPart =total_events[0].get_participantCount();
-        }}else topPart=total_events[0].get_participantCount();
+      if(TotalEvCount>=2) {
+          for (int i = 0; i < TotalEvCount; i++) {
+              int maxIdx = i;
+              for (int j = i + 1; j < TotalEvCount; j++) {
+                  if (isSortCriteria(total_events[maxIdx], total_events[j])) {
+                      maxIdx = j;
+                  }
+              }
+              Event tmpEventName = total_events[i];
+              total_events[i] = total_events[maxIdx];
+              total_events[maxIdx] = tmpEventName;
+          }
+      }
 
     }//Aqui estão o criterios de ordenação que estão no enunciado
-    private boolean sortCriteria (Event eventI,Event eventJ){
+    private boolean isSortCriteria (Event eventI,Event eventJ){
         if(eventI.get_participantCount()!=eventJ.get_participantCount()){
             return eventI.get_participantCount()<eventJ.get_participantCount();}
         if(eventI.get_day()!=eventJ.get_day()){
-            return eventI.get_day()<eventJ.get_day();}
+            return eventI.get_day()>eventJ.get_day();}
         if(eventI.get_start()!=eventJ.get_start()){
             return eventI.get_start()>eventJ.get_start();}
         if(eventI.get_end()!=eventJ.get_end()){
             return eventI.get_end()>eventJ.get_end();
         }
         else return eventI.get_name().compareTo(eventJ.get_name())>0;
+
         }
-        public Event[] top_events(){
-         countTop=0;
-        for(int i=0;i<TotalEvCount;i++){
+        public Event []top_events(){
+        updateTopNumOfParticipant();//Procura qual é novo número top de participantes
+        countTop=0;
+        for(int i=0;i<TotalEvCount;i++){//Quantos têm esse número top
             if(topPart==total_events[i].get_participantCount()){
                 countTop++;
             }
-        }Event[]tempEventName=new Event[countTop];
+
+        }Event[]tempEventName=new Event[countTop];//Guarda os tops num array temp
         for(int i=0;i<countTop;i++){
             tempEventName[i]=total_events[i];
             }
+
         return tempEventName;
         }
 
     // EVENTOS
-    // Determine se existe evento no array
+    // existe o evento no array?
     public boolean event_exists(String name) {
         for (int i = 0; i < TotalEvCount; i++) {
             if (total_events[i].get_name().equals(name)) {
@@ -98,7 +103,16 @@ public class SystemManager{
             }
         }
         return false;
+    }//Verifica se está no calendário do user
+    public boolean isInCalender(String eventName,String user) {
+        for (int i = 0; i <get_user(user).get_eventCount(); i++) {
+            if (get_user(user).get_Events(i).equals(get_event(eventName))) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
     // Dá nos o evento através do nome
     public Event get_event(String name){
@@ -109,7 +123,7 @@ public class SystemManager{
         }
         return null;
     }
-    // Create event
+    // create event
     public void create_event(String name, int day, int start, int end,User[] parts, int count){
         total_events[TotalEvCount] = new Event(name, day, start, end, parts, count);
         for (int i = 0;i<count; i++){
@@ -117,17 +131,22 @@ public class SystemManager{
         }
         TotalEvCount++;
         sortEvents();
+
     }
 
     // remove evento no SystemManager e substitui pelo ultimo elemento de total_events.
-    public void del_event(String event,String user){
-        User userName =get_user(user);
+    public void del_event(String event){
+        User userName;
         Event eventName =get_event(event);
-        userName.del_event(eventName);
+        int eventP=eventName.get_participantCount();
+        for(int i=0;i<eventP;i++){//Apaga o evento em todos os participantes
+            userName=eventName.get_participants(i);
+            userName.del_event_user(eventName);}
         for (int i = 0; i< TotalEvCount; i++) {
             if (total_events[i].equals(eventName)) {
                 total_events[i] = total_events[TotalEvCount - 1];
                 TotalEvCount--;
+                sortEvents();
             }
         }
 
@@ -142,6 +161,14 @@ public class SystemManager{
     public int get_EventCount(){
         return TotalEvCount;
     }
+    public void updateTopNumOfParticipant(){
+      topPart=0;
+        for(int i=0;i<TotalEvCount;i++){
+            if(total_events[i].get_participantCount()>topPart){
+                topPart=total_events[i].get_participantCount();
+            }
+        }
+    }
     public int get_UserCount(){
         return user_count;
     }
@@ -155,11 +182,11 @@ public class SystemManager{
         Scanner sfr = new Scanner(fr);
         int numberUsers = sfr.nextInt();
         // Precorre o ficheiro consoante o nr de Users
-        for (int i=0;i<numberUsers;i++) {
+        for (int i=0;i<numberUsers;i++){
             String user_name = sfr.next();
             if (!(user_exists(user_name))) create_user(user_name);
         }
-        // Percorre os eventos
+        // Percorre os eventos por user
         int numberEvents = sfr.nextInt();
         for (int n=0;n<numberEvents;n++){
             String eventName = sfr.next();
@@ -167,7 +194,8 @@ public class SystemManager{
             int eventStart = sfr.nextInt();
             int eventEnd = sfr.nextInt();
             int partCount = sfr.nextInt();
-            // Percorre o nr de participantes por evento
+
+            // percorre o nr de participantes por evento e cria users se não existirem.
             User[] participantUser = new User[partCount];
             for (int m =0;m<partCount;m++){
                 String participante = sfr.next();
@@ -180,7 +208,10 @@ public class SystemManager{
             if (!(event_exists(eventName))) {
                 create_event(eventName, eventDay, eventStart, eventEnd, participantUser, partCount);
             }
+
+
         }
     }
+}
 }
 
