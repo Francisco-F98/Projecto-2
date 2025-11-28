@@ -42,7 +42,6 @@ public class SystemManager{
     public void create_user(String name){
         users[user_count]= new User(name);
         user_count++;
-
     }
     public boolean checkProp(String name,String eventName){
         return get_event(eventName).get_proponente().equals(get_user(name));
@@ -76,7 +75,6 @@ public class SystemManager{
             return eventI.get_end()>eventJ.get_end();
         }
         else return eventI.get_name().compareTo(eventJ.get_name())>0;
-
         }
         public Event []top_events(){
          countTop=0;
@@ -88,12 +86,11 @@ public class SystemManager{
         for(int i=0;i<countTop;i++){
             tempEventName[i]=total_events[i];
             }
-
         return tempEventName;
         }
 
     // EVENTOS
-    // existe o evento no array?
+    // Determine se existe evento no array
     public boolean event_exists(String name) {
         for (int i = 0; i < TotalEvCount; i++) {
             if (total_events[i].get_name().equals(name)) {
@@ -112,16 +109,14 @@ public class SystemManager{
         }
         return null;
     }
-    // create event
+    // Create event
     public void create_event(String name, int day, int start, int end,User[] parts, int count){
         total_events[TotalEvCount] = new Event(name, day, start, end, parts, count);
-        System.out.println("total ev count: "+TotalEvCount);
         for (int i = 0;i<count; i++){
             parts[i].add_event(total_events[TotalEvCount]);
         }
         TotalEvCount++;
         sortEvents();
-
     }
 
     // remove evento no SystemManager e substitui pelo ultimo elemento de total_events.
@@ -186,8 +181,6 @@ public class SystemManager{
                 if (!(event_exists(eventName))) {
                     create_event(eventName, eventDay, eventStart, eventEnd, participantUser, partCount);
                 }
-
-
             }
         }
     }
