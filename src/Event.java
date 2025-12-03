@@ -2,7 +2,7 @@
 public class Event{
 
     //max participantes por evento
-    private int max_part = 10;
+    private int maxParticipants = 10;
 
 
     private String name;
@@ -15,7 +15,7 @@ public class Event{
     //array com os participantes no evento
     private User[] participants;
     // nr de participantes
-    private int participant_count;
+    private int participantCount;
 
     // constructor
     public Event(String name,int day,int start, int end, User[] parts, int part_count){
@@ -25,8 +25,8 @@ public class Event{
         this.start = start;
         this.end= end;
 
-        this.participants = new User[max_part];
-        this.participant_count = part_count;
+        this.participants = new User[maxParticipants];
+        this.participantCount = part_count;
 
         for (int i = 0; i < part_count;i++){
             this.participants[i]=  parts[i];
@@ -34,25 +34,25 @@ public class Event{
     }
 
     // getters:
-    public String get_name(){
+    public String getName(){
         return name;
     }
-    public int get_day(){
+    public int getDay(){
         return day;
     }
-    public int get_start(){
+    public int getStart(){
         return start;
     }
-    public int get_end(){
+    public int getEnd(){
         return end;
     }
-    public int get_participantCount(){
-        return participant_count;
+    public int getParticipantCount(){
+        return participantCount;
     }
-    public User get_proponente(){
+    public User getProponent(){
         return participants[0];
     }
-    public User get_participants(int idx){
+    public User getParticipants(int idx){
         return participants[idx];
 
     }
