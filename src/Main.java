@@ -164,7 +164,7 @@ public class Main {
             }
         } while (!command.equals(EXIT_CMD));
     }
-    static void main (){
+    public static void main (String[]args){
         Scanner sc = new Scanner(System.in);
         String fileName = sc.nextLine();
         SystemManager sysM = new SystemManager();
