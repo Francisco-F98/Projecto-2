@@ -1,17 +1,16 @@
 //Representa os utilizadores(nome, eventos, nr de eventos)
 public class User{
 
-    // max 200 events por user
+    // Max 200 events per user
     private int maxEvents = 200;
-    // nome tem de ser unico
     private String name;
-    // array dos eventos do user
+    // Event Array per User
     private Event[] events;
-    // nr de eventos associados ao user
+    // Number of Events User is registered
     private int eventCount;
 
 
-    // constructor
+    // Constructor
     public User(String name){
         this.name = name;
         this.events = new Event[maxEvents];
@@ -19,7 +18,7 @@ public class User{
     }
 
 
-    //getters:
+    // Getters:
     public String getName(){
         return name;
     }
@@ -34,7 +33,7 @@ public class User{
     }
 
 
-    // adiciona o proximo evento no calendario
+    // Adds a new Event
     public void addEvent(Event eventName){
         events[eventCount]= eventName;
         eventCount++;
@@ -43,7 +42,7 @@ public class User{
         }
 
     }
-    //Sort by selection order
+    // Sort by selection order
     public void sortUserEvents(){
             for(int i = 0; i< eventCount; i++){
                 int minIdx = i;
@@ -56,10 +55,7 @@ public class User{
                 events[i]=events[minIdx];
                 events[minIdx]=tmpEventName;
             }
-
     }
-
-
 
 
     public boolean sortCriteria(Event eventI,Event eventJ){
@@ -71,29 +67,25 @@ public class User{
             return eventI.getEnd()>eventJ.getEnd();
         }
         else return eventI.getName().compareTo(eventJ.getName())>0;
-
     }
 
 
-    // remove evento no calendario e substitui pelo ultimo elemento de events.
+    // Removes an Event
     public void delEvent(Event eventName){
         for (int i = 0; i< eventCount; i++) {
             if (events[i].equals(eventName)) {         // usar .equals??//eu não mudei nada aqui
                 events[i] = events[eventCount - 1];
                 eventCount--;
-
             }
         }
     sortUserEvents();
     }
 
 
-    // verificar conflitos de horario-True se houver conflito  // day: 1-5.
+    // Verifies if there are conflicts. True if conflicts found.
     public boolean conflit(int day, int inicio, int fim){
         for (int i = 0; i< eventCount; i++){
-            // metodos definidos na classe Event
             if (events[i].getDay() == day){
-                // existe conflito? ( há sobreposição? )
                 if ( (inicio < events[i].getEnd()) && (fim  > events[i].getStart()) ){
                     return true;
                 }
@@ -101,6 +93,4 @@ public class User{
         }
         return false;
     }
-
-
 }

@@ -1,23 +1,22 @@
-// Representa um evento
+
 public class Event{
 
-    //max participantes por evento
+    // Max participants per Event
     private int maxParticipants = 10;
 
 
     private String name;
-    // dia do evento: 1-5
+    // Day goes from 1 to 5
     private int day;
-    //hora de inicio: 8-19
+    //Hours can go from 8 to 20
     private int start;
-    //hora de fim: 9-20
     private int end;
-    //array com os participantes no evento
+    //Array with Users participating in the Event
     private User[] participants;
-    // nr de participantes
+    // Number of Users
     private int participantCount;
 
-    // constructor
+    // Constructor
     public Event(String name,int day,int start, int end, User[] parts, int part_count){
 
         this.name = name;
@@ -33,7 +32,7 @@ public class Event{
         }
     }
 
-    // getters:
+    // Getters:
     public String getName(){
         return name;
     }
@@ -54,7 +53,5 @@ public class Event{
     }
     public User getParticipants(int idx){
         return participants[idx];
-
     }
-
 }

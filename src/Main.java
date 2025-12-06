@@ -1,8 +1,7 @@
-´// Projecto 2 - Elton Vieira, Francisco Ferreira
+// Projecto 2 - Elton Vieira nº 73581, Francisco Ferreira nº73415
+
 import java.util.Scanner;
 import java.io.FileNotFoundException;
-
-
 
 public class Main {
     private static final String CREATE_CMD = "create";
@@ -41,6 +40,7 @@ public class Main {
         }
         return true;
     }
+
     private static void createEvent(SystemManager sysM, String eName, int eDay, int eStart, int eEnd, String[] parts) {
         User[] eventParts = new User[parts.length];
         for (int i = 0; i < parts.length; i++) {
@@ -50,13 +50,13 @@ public class Main {
     }
     private static String handlesSchedule(SystemManager sysM,String eName,int eDay,int eStart,int eEnd,String[]parts){
         int proponent=0;
-        if (!areRegistered(sysM,parts,parts.length))                 //Mudar a lógica
+        if (!areRegistered(sysM,parts,parts.length))
             return SCHEDULE_ERROR_NOT;
         if (sysM.eventExists(eName))
             return SCHEDULE_ERROR_EXIST;
         if (sysM.getUser(parts[proponent]).conflit(eDay, eStart, eEnd))
             return SCHEDULE_ERROR_PROPOSER;
-        if (!allAvailable(sysM,parts,eDay,eStart,eEnd)) // Mudar a lógica,mudar nome
+        if (!allAvailable(sysM,parts,eDay,eStart,eEnd))
             return SCHEDULE_ERROR_USER;
         createEvent(sysM,eName,eDay,eStart,eEnd,parts);
         return SCHEDULE_CREATED;
@@ -66,7 +66,8 @@ public class Main {
         return e.getName()+", day "+e.getDay()+", "+e.getStart()+"-"+
                 e.getEnd()+", "+e.getParticipantCount()+ " participants.";
     }
-    // cria um USER novo SE ainda não existe
+
+    // Creates a new user
     private static void createUser(SystemManager sysM,Scanner sc) {
         String name = sc.next();
         if (sysM.userExists(name))
@@ -77,9 +78,9 @@ public class Main {
         }
     }
 
-    // Cria um EVENTO novo SE ainda não existe
+    // Creates a new Event
     private static void scheduleEvent(SystemManager sysM,Scanner sc) {
-        // Read / Prepare
+
         String eventName = sc.next();
         int eDay = sc.nextInt();
         int eStart = sc.nextInt();
@@ -90,7 +91,7 @@ public class Main {
         System.out.println(handlesSchedule(sysM,eventName,eDay,eStart,eEnd,parts));
     }
 
-    // apaga o evento, so o proponente pode fazer
+    // Deletes an Event
     private static void cancelEvent (SystemManager sysM,Scanner sc) {
         String eventName = sc.next();
         String user = sc.next();
@@ -99,21 +100,21 @@ public class Main {
         else if (!sysM.isInCalender(eventName,user))
             System.out.printf("Event not found in calendar of %s.\n",user);
         else if(!sysM.isProponent(user,eventName))
-            System.out.printf("User %s did not create event %s.\n",user,eventName);                     //Ver
+            System.out.printf("User %s did not create event %s.\n",user,eventName);
         else{
             sysM.deleteEvent(eventName);
             System.out.println(CANCEL_SUCCESS);
         }
-
     }
-    // mostra o calendario de um user por ordem cronologica
-    private static void showEvent (SystemManager sysM,Scanner sc) {         //Ver a lógica dos if
+
+    // Shows a User Events by chronological order
+    private static void showEvent (SystemManager sysM,Scanner sc) {
         String name = sc.next();
         sc.nextLine();
         if (!sysM.userExists(name))
             System.out.println(SHOW_ERROR);
         else {
-            if (sysM.getUser(name).getEventCount() == 0){ //Criar algo que altere este número
+            if (sysM.getUser(name).getEventCount() == 0){
                 System.out.println("User "+ name +" has no events.");
             }
             else {
@@ -124,7 +125,8 @@ public class Main {
             }
         }
     }
-    // Mostra eventos por ordem de adesao
+
+    // Shows Events by number of users registered
     private static void topEvents (SystemManager sysM) {
         if(sysM.getEventCount()==0){
             System.out.println(TOP_ERROR);
@@ -162,7 +164,7 @@ public class Main {
             }
         } while (!command.equals(EXIT_CMD));
     }
-    public static void main (String[]args){
+    static void main (){
         Scanner sc = new Scanner(System.in);
         String fileName = sc.nextLine();
         SystemManager sysM = new SystemManager();
