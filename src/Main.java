@@ -142,7 +142,7 @@ public class Main {
     private static void exit () {
         System.out.println(EXITED);
     }
-
+    // Menu of commands,select which the user chooses
     private static void executeCommand (SystemManager sysM,Scanner sc) {
         String command;
         do {
