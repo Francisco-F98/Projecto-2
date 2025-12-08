@@ -25,14 +25,14 @@ public class Main {
 
 
 
-
+    //Checks if all the events participants are available
     private static boolean allAvailable(SystemManager sysM,String[] parts,int eDay,int eStart,int eEnd){
         for (int i = 1; i < parts.length; i++) {
             if (sysM.getUser(parts[i]).conflit(eDay, eStart, eEnd)) return false;
         }
         return true;
     }
-
+    //Checks if all the participants are registered
     private static boolean areRegistered(SystemManager sysM, String[]participants, int participantsCount){
         for (int i = 0; i < participantsCount; i++) {
             if (!sysM.userExists(participants[i]))
@@ -40,7 +40,7 @@ public class Main {
         }
         return true;
     }
-
+    //Sends the event information to System Manager so the event can be created
     private static void createEvent(SystemManager sysM, String eName, int eDay, int eStart, int eEnd, String[] parts) {
         User[] eventParts = new User[parts.length];
         for (int i = 0; i < parts.length; i++) {
@@ -48,6 +48,7 @@ public class Main {
         }
         sysM.createEvent(eName, eDay, eStart, eEnd, eventParts, parts.length);
     }
+    //Conditions so the event can be created
     private static String handlesSchedule(SystemManager sysM,String eName,int eDay,int eStart,int eEnd,String[]parts){
         int proponent=0;
         if (!areRegistered(sysM,parts,parts.length))
@@ -61,7 +62,7 @@ public class Main {
         createEvent(sysM,eName,eDay,eStart,eEnd,parts);
         return SCHEDULE_CREATED;
     }
-
+    //Returns a formated text
     private static String formatEvent(Event e){
         return e.getName()+", day "+e.getDay()+", "+e.getStart()+"-"+
                 e.getEnd()+", "+e.getParticipantCount()+ " participants.";
@@ -138,11 +139,11 @@ public class Main {
             }
         }
     }
-
+    //Exit command to finalize the program
     private static void exit () {
         System.out.println(EXITED);
     }
-    // Menu of commands,select which the user chooses
+   // Menu of commands,select which command the user chooses
     private static void executeCommand (SystemManager sysM,Scanner sc) {
         String command;
         do {
@@ -159,7 +160,7 @@ public class Main {
                 case EXIT_CMD -> exit();
                 default -> {
                     System.out.println(INVALID_CMD);
-                            sc.nextLine();
+                    sc.nextLine();
                 }
             }
         } while (!command.equals(EXIT_CMD));
@@ -175,6 +176,6 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
-    executeCommand(sysM,sc);
+        executeCommand(sysM,sc);
     }
 }
