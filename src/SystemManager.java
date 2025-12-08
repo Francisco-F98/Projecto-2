@@ -50,20 +50,20 @@ public class SystemManager{
 
     //Selection sort
     private void sortEvents() {
-      if(totalEvCount >=2) {
-          for (int i = 0; i < totalEvCount; i++) {
-              int maxIdx = i;
-              for (int j = i + 1; j < totalEvCount; j++) {
-                  if (isSortCriteria(totalEvents[maxIdx], totalEvents[j])) {
-                      maxIdx = j;
-                  }
-              }
+        if(totalEvCount >=2) {
+            for (int i = 0; i < totalEvCount; i++) {
+                int maxIdx = i;
+                for (int j = i + 1; j < totalEvCount; j++) {
+                    if (isSortCriteria(totalEvents[maxIdx], totalEvents[j])) {
+                        maxIdx = j;
+                    }
+                }
 
-              Event tmpEventName = totalEvents[i];
-              totalEvents[i] = totalEvents[maxIdx];
-              totalEvents[maxIdx] = tmpEventName;
-          }
-      }
+                Event tmpEventName = totalEvents[i];
+                totalEvents[i] = totalEvents[maxIdx];
+                totalEvents[maxIdx] = tmpEventName;
+            }
+        }
     }
 
     // Sort Criteria based on instructions
@@ -78,9 +78,9 @@ public class SystemManager{
             return eventI.getEnd()>eventJ.getEnd();
         }
         else return eventI.getName().compareTo(eventJ.getName())>0;
-        }
-
-        public Event[] topEvents(){
+    }
+    //Find the events with the top participant count
+    public Event[] topEvents(){
         updateTopNumOfParticipant();
         countTop=0;
         for(int i = 0; i< totalEvCount; i++){
@@ -91,9 +91,9 @@ public class SystemManager{
         }Event[]tempEventName=new Event[countTop];
         for(int i=0;i<countTop;i++){
             tempEventName[i]= totalEvents[i];
-            }
-        return tempEventName;
         }
+        return tempEventName;
+    }
 
 
     // Verifies if the Event is already registered
@@ -161,7 +161,7 @@ public class SystemManager{
         return totalEvCount;
     }
     public void updateTopNumOfParticipant(){
-      topPart=0;
+        topPart=0;
         for(int i = 0; i< totalEvCount; i++){
             if(totalEvents[i].getParticipantCount()>topPart){
                 topPart= totalEvents[i].getParticipantCount();
