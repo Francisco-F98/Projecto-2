@@ -1,4 +1,4 @@
-//Representa os utilizadores(nome, eventos, nr de eventos)
+
 public class User{
 
     // Max 200 events per user
@@ -44,23 +44,23 @@ public class User{
     }
     // Sort by selection order
     public void sortUserEvents(){
-            for(int i = 0; i< eventCount; i++){
-                int minIdx = i;
-                for(int j = i+1; j< eventCount; j++){
-                    if(sortCriteria(events[minIdx],events[j])){
-                        minIdx = j;
-                    }
+        for(int i = 0; i< eventCount; i++){
+            int minIdx = i;
+            for(int j = i+1; j< eventCount; j++){
+                if(sortCriteria(events[minIdx],events[j])){
+                    minIdx = j;
                 }
-                Event tmpEventName=events[i];
-                events[i]=events[minIdx];
-                events[minIdx]=tmpEventName;
             }
+            Event tmpEventName=events[i];
+            events[i]=events[minIdx];
+            events[minIdx]=tmpEventName;
+        }
     }
 
-
+    // Sort Criteria based on instructions
     public boolean sortCriteria(Event eventI,Event eventJ){
         if(eventI.getDay()!=eventJ.getDay()){
-            return eventI.getDay()>eventJ.getDay();} //Mudar
+            return eventI.getDay()>eventJ.getDay();}
         if(eventI.getStart()!=eventJ.getStart()){
             return eventI.getStart()>eventJ.getStart();}
         if(eventI.getEnd()!=eventJ.getEnd()){
@@ -73,12 +73,12 @@ public class User{
     // Removes an Event
     public void delEvent(Event eventName){
         for (int i = 0; i< eventCount; i++) {
-            if (events[i].equals(eventName)) {         // usar .equals??//eu não mudei nada aqui
+            if (events[i].equals(eventName)) {
                 events[i] = events[eventCount - 1];
                 eventCount--;
             }
         }
-    sortUserEvents();
+        sortUserEvents();
     }
 
 
